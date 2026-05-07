@@ -288,7 +288,7 @@
                 android:id="@+id/btn_Calculate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#E91E63"
+                android:backgroundTint="#FFEB3B"
                 android:text="=" />
         </TableRow>
 

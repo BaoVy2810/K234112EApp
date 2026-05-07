@@ -1,5 +1,6 @@
 package com.example.k234112eapp;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class CalculatorActivity extends AppCompatActivity {
+    private static final String PREF_CALCULATOR = "calculator_pref";
+    private static final String KEY_FORMULA = "key_formula";
+
     EditText edtFormula;
     Button btnDel,btn_Calculate;
     TextView txtMC, txtMR, txtMPlus, txtMMinus, txtMS, txtM;
@@ -29,6 +33,23 @@ public class CalculatorActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences preferences = getSharedPreferences(PREF_CALCULATOR, MODE_PRIVATE);
+        preferences.edit()
+                .putString(KEY_FORMULA, edtFormula.getText().toString())
+                .apply();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences preferences = getSharedPreferences(PREF_CALCULATOR, MODE_PRIVATE);
+        String lastFormula = preferences.getString(KEY_FORMULA, "");
+        edtFormula.setText(lastFormula);
     }
 
     private void addEvents() {
@@ -52,21 +73,20 @@ public class CalculatorActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //step 1: get data (formular)
                 String formular=edtFormula.getText().toString();
-                //step 2: invoke library for formular (find internet)...
-                String result="";
-                //result=library_nào_đó(formular)
+                //step 2: calculate for +, -, *, :
+                String result=calculateExpression(formular);
                 //step 3:
                 edtFormula.setText(result);
             }
         });
         m_onclick=new View.OnClickListener(){
             @Override
-            public void OnClick(View view){
+            public void onClick(View view){
                 if (view.equals(txtM))
                 {
                     //khách hàng nhấn txtM
                 }
-                else if (view.equals(txtMinus))
+                else if (view.equals(txtMMinus))
                 {
                     //khách hàng nhấn txtMinus
                 }//không dùng dấu == để so sánh vì nó không hiểu so sánh ô nhớ khi dùng ==
@@ -107,4 +127,68 @@ public class CalculatorActivity extends AppCompatActivity {
         //show value for customer:
         edtFormula.setText(new_value);
     }
+
+    private String calculateExpression(String expression) {
+        if (expression == null) return "";
+        String exp = expression.trim();
+        if (exp.isEmpty()) return "";
+
+        int operatorIndex = -1;
+        char operator = ' ';
+
+        for (int i = 1; i < exp.length(); i++) {
+            char c = exp.charAt(i);
+            if (c == '+' || c == '-' || c == '*' || c == ':') {
+                operatorIndex = i;
+                operator = c;
+                break;
+            }
+        }
+
+        if (operatorIndex == -1) return exp;
+
+        String leftPart = exp.substring(0, operatorIndex).trim();
+        String rightPart = exp.substring(operatorIndex + 1).trim();
+
+        if (leftPart.isEmpty() || rightPart.isEmpty()) return exp;
+
+        try {
+            double left = Double.parseDouble(leftPart);
+            double right = Double.parseDouble(rightPart);
+            double value;
+
+            switch (operator) {
+                case '+':
+                    value = left + right;
+                    break;
+                case '-':
+                    value = left - right;
+                    break;
+                case '*':
+                    value = left * right;
+                    break;
+                case ':':
+                    if (right == 0) return "Cannot divide by 0";
+                    value = left / right;
+                    break;
+                default:
+                    return exp;
+            }
+
+            if (value == (long) value) {
+                return String.valueOf((long) value);
+            }
+            return String.valueOf(value);
+        } catch (NumberFormatException e) {
+            return exp;
+        }
+    }
 }
+/*
+khi nào tương tác với khách hàng => onResume (phải chờ 1 chút để khởi động) => phục hồi = onResume
+Killable (quản lí tụi này khi ở trạng thái chờ => có thể mất hết)
+khi mún lưu tự động dữ liệu hành vi của khách hàng ở sự kiện nào? => lưu trong hàm ONPAUSE
+login => onpause => onstop (che toàn bộ)
+log in => onpause (đóng lại)
+exit => onpause => onstop => ondestroy (tắt)
+ */
