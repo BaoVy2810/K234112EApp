@@ -1,14 +1,17 @@
 package com.example.k234112eapp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -23,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView txtMessage;
     CheckBox chkSaveLogin;
     String name_share_pref="LoginInfo";
+    RadioButton radAdmin, radEmployee;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +45,8 @@ public class LoginActivity extends AppCompatActivity {
         edtPassword=findViewById(R.id.edtPassword);
         txtMessage=findViewById(R.id.txtMessage);
         chkSaveLogin=findViewById(R.id.chkSaveLogin);
+        radAdmin=findViewById(R.id.radAdmin);
+        radEmployee=findViewById(R.id.radEmployee);
     }
 
     public void loginSystem(View view){
@@ -59,8 +65,19 @@ public class LoginActivity extends AppCompatActivity {
 
 
             txtMessage.setText(getString(R.string.str_login_success));
-            Intent intent=new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
+            if(radAdmin.isChecked()){
+                //dĩ nhiên ta phải kiểm tra account này có quyền admin hay ko (tính sau)
+                Intent intent=new Intent(LoginActivity.this, CalculatorActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            else
+            {
+                Intent intent=new Intent(LoginActivity.this, EmployeeManagementActivity.class);
+                startActivity(intent);
+                finish();
+            }
+
         }
         else
         {
@@ -69,7 +86,26 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void exitSystem(View view) {
-        finish();
+        //finish();
+        AlertDialog.Builder builder= new AlertDialog.Builder(LoginActivity.this);
+        builder.setTitle(getString(R.string.str_confirm_exit));
+        builder.setMessage(getString(R.string.str_want_exit));
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
+        builder.setPositiveButton(getString(R.string.str_yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+        builder.setNegativeButton(getString(R.string.str_no), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        AlertDialog dialog=builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 
     @Override

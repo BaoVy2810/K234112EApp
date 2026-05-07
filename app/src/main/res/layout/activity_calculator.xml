@@ -91,6 +91,7 @@
 
             <Button
                 android:id="@+id/btn_divide"
+                android:onClick="processSpecialInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#E91E63"
@@ -98,6 +99,7 @@
 
             <Button
                 android:id="@+id/btn_ce"
+                android:onClick="processSpecialInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#E91E63"
@@ -105,6 +107,7 @@
 
             <Button
                 android:id="@+id/btn_c"
+                android:onClick="processSpecialInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#E91E63"
@@ -123,6 +126,7 @@
 
             <Button
                 android:id="@+id/btn1_x"
+                android:onClick="processSpecialInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#E91E63"
@@ -130,6 +134,7 @@
 
             <Button
                 android:id="@+id/btn_sqr_"
+                android:onClick="processSpecialInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#E91E63"
@@ -137,6 +142,7 @@
 
             <Button
                 android:id="@+id/btn_sqrt"
+                android:onClick="processSpecialInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#E91E63"
@@ -279,6 +285,7 @@
 
             <Button
                 android:id="@+id/btn_digit"
+                android:onClick="processSpecialInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#E91E63"

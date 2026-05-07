@@ -24,5 +24,8 @@
     <string name="str_login_role">Login Role</string>
     <string name="str_role_admin">Administrator</string>
     <string name="str_role_employee">Employee</string>
-
+    <string name="str_confirm_exit">Xác nhận thoát</string>
+    <string name="str_want_exit">Bạn có muốn thoát không?</string>
+    <string name="str_yes">CÓ</string>
+    <string name="str_no">KHÔNG</string>
 </resources>

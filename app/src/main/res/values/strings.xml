@@ -23,5 +23,9 @@
     <string name="str_login_role">Login Role</string>
     <string name="str_role_admin">Administrator</string>
     <string name="str_role_employee">Employee</string>
+    <string name="str_confirm_exit">Confirm Exit</string>
+    <string name="str_want_exit">Do you want to exit?</string>
+    <string name="str_yes">YES</string>
+    <string name="str_no">NO</string>
 
 </resources>

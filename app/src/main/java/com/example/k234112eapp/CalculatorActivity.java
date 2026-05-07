@@ -128,6 +128,117 @@ public class CalculatorActivity extends AppCompatActivity {
         edtFormula.setText(new_value);
     }
 
+    public void processSpecialInput(View view) {
+        int viewId = view.getId();
+        String formula = edtFormula.getText().toString().trim();
+
+        if (viewId == R.id.btn_c) {
+            edtFormula.setText("");
+            return;
+        }
+
+        if (viewId == R.id.btn_ce) {
+            edtFormula.setText(clearCurrentEntry(formula));
+            return;
+        }
+
+        if (viewId == R.id.btn_digit) {
+            if (canAppendDecimal(formula)) {
+                edtFormula.setText(formula.isEmpty() ? "0." : formula + ".");
+            }
+            return;
+        }
+
+        if (formula.isEmpty()) {
+            return;
+        }
+
+        if (viewId == R.id.btn_divide) {
+            edtFormula.setText(applyPercent(formula));
+            return;
+        }
+
+        Double value = parseNumericValue(formula);
+        if (value == null) return;
+
+        if (viewId == R.id.btn1_x) {
+            if (value == 0) {
+                edtFormula.setText("Cannot divide by 0");
+            } else {
+                edtFormula.setText(formatNumber(1 / value));
+            }
+        } else if (viewId == R.id.btn_sqr_) {
+            edtFormula.setText(formatNumber(value * value));
+        } else if (viewId == R.id.btn_sqrt) {
+            if (value < 0) {
+                edtFormula.setText("Invalid input");
+            } else {
+                edtFormula.setText(formatNumber(Math.sqrt(value)));
+            }
+        }
+    }
+
+    private String clearCurrentEntry(String formula) {
+        if (formula == null || formula.isEmpty()) return "";
+        for (int i = formula.length() - 1; i >= 1; i--) {
+            char c = formula.charAt(i);
+            if (c == '+' || c == '-' || c == '*' || c == ':') {
+                return formula.substring(0, i + 1);
+            }
+        }
+        return "";
+    }
+
+    private boolean canAppendDecimal(String formula) {
+        if (formula == null || formula.isEmpty()) return true;
+        for (int i = formula.length() - 1; i >= 0; i--) {
+            char c = formula.charAt(i);
+            if (c == '.') return false;
+            if (c == '+' || c == '-' || c == '*' || c == ':') return true;
+        }
+        return true;
+    }
+
+    private String applyPercent(String formula) {
+        for (int i = formula.length() - 1; i >= 1; i--) {
+            char c = formula.charAt(i);
+            if (c == '+' || c == '-' || c == '*' || c == ':') {
+                String left = formula.substring(0, i + 1);
+                String right = formula.substring(i + 1).trim();
+                if (right.isEmpty()) return formula;
+                try {
+                    double value = Double.parseDouble(right);
+                    return left + formatNumber(value / 100.0);
+                } catch (NumberFormatException e) {
+                    return formula;
+                }
+            }
+        }
+        try {
+            double value = Double.parseDouble(formula);
+            return formatNumber(value / 100.0);
+        } catch (NumberFormatException e) {
+            return formula;
+        }
+    }
+
+    private Double parseNumericValue(String formula) {
+        try {
+            return Double.parseDouble(formula);
+        } catch (NumberFormatException e) {
+            try {
+                return Double.parseDouble(calculateExpression(formula));
+            } catch (NumberFormatException ignored) {
+                return null;
+            }
+        }
+    }
+
+    private String formatNumber(double value) {
+        if (value == (long) value) return String.valueOf((long) value);
+        return String.valueOf(value);
+    }
+
     private String calculateExpression(String expression) {
         if (expression == null) return "";
         String exp = expression.trim();
