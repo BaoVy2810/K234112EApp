@@ -67,15 +67,13 @@ public class LoginActivity extends AppCompatActivity {
             txtMessage.setText(getString(R.string.str_login_success));
             if(radAdmin.isChecked()){
                 //dĩ nhiên ta phải kiểm tra account này có quyền admin hay ko (tính sau)
-                Intent intent=new Intent(LoginActivity.this, CalculatorActivity.class);
+                Intent intent=new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
-                finish();
             }
             else
             {
                 Intent intent=new Intent(LoginActivity.this, EmployeeManagementActivity.class);
                 startActivity(intent);
-                finish();
             }
 
         }
@@ -88,8 +86,8 @@ public class LoginActivity extends AppCompatActivity {
     public void exitSystem(View view) {
         //finish();
         AlertDialog.Builder builder= new AlertDialog.Builder(LoginActivity.this);
-        builder.setTitle(getString(R.string.str_confirm_exit));
-        builder.setMessage(getString(R.string.str_want_exit));
+        builder.setTitle(getString(R.string.str_exit));
+        builder.setMessage(getString(R.string.str_confirm_exit));
         builder.setIcon(android.R.drawable.ic_dialog_alert);
         builder.setPositiveButton(getString(R.string.str_yes), new DialogInterface.OnClickListener() {
             @Override

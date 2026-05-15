@@ -5,13 +5,13 @@
     <string name="str_clickme_to_say_hello">Say Hello</string>
     <string name="str_login_system">Login System</string>
     <string name="str_username">Username:</string>
-    <string name="str_hint_username">Enter your Username</string>
+    <string name="str_hint_username">Enter your User name</string>
     <string name="str_password">Password:</string>
+    <string name="str_hint_password">Enter your Password</string>
     <string name="str_login">Login</string>
     <string name="str_exit">Exit</string>
-    <string name="str_hint_password">Enter your Password</string>
-    <string name="str_login_success">Login successful!!!</string>
-    <string name="str_login_failed">Login failed!!!</string>
+    <string name="str_login_success">Login successful!!!!!</string>
+    <string name="str_login_failed">Login failed!!!!!</string>
     <string name="str_mc">MC</string>
     <string name="str_mr">MR</string>
     <string name="str_mplus">M+</string>
@@ -19,13 +19,20 @@
     <string name="str_ms">MS</string>
     <string name="str_m">M</string>
     <string name="str_open_calculator_app">Open Calculator App</string>
-    <string name="str_save_login_infor">Save Login Information</string>
+    <string name="str_save_login_infor">Save login information</string>
     <string name="str_login_role">Login Role</string>
     <string name="str_role_admin">Administrator</string>
     <string name="str_role_employee">Employee</string>
-    <string name="str_confirm_exit">Confirm Exit</string>
-    <string name="str_want_exit">Do you want to exit?</string>
-    <string name="str_yes">YES</string>
-    <string name="str_no">NO</string>
-
+    <string name="str_employee_id">Employee Id:</string>
+    <string name="str_employee_name">Employee name:</string>
+    <string name="str_phone_number">Phone Number</string>
+    <string name="str_save">Save</string>
+    <string name="str_delete">Delete</string>
+    <string name="str_confirm_exit">Are you sure you want to exit?</string>
+    <string name="str_msg_select_employee">Please select an employee to delete</string>
+    <string name="str_confirm_delete_title">Delete Confirmation</string>
+    <string name="str_confirm_delete_msg">Do you really want to delete this employee?</string>
+    <string name="str_yes">Yes</string>
+    <string name="str_no">No</string>
+    <string name="str_delete_success">Deleted successfully</string>
 </resources>
