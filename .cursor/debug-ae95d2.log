@@ -1,0 +1,6 @@
+{"sessionId":"ae95d2","location":"LoginActivity.java:onCreate","message":"Login screen ready","hypothesisId":"C","timestamp":1779204395907,"data":{"savedChecked":true}}
+{"sessionId":"ae95d2","location":"LoginActivity.java:onCreate","message":"Login screen ready","hypothesisId":"C","timestamp":1779204509512,"data":{"savedChecked":true}}
+{"sessionId":"ae95d2","location":"LoginActivity.java:loginSystem","message":"Login attempt","hypothesisId":"C","timestamp":1779204514569,"data":{"loginOk":true,"isAdmin":true,"isEmployee":false}}
+{"sessionId":"ae95d2","location":"EmployeeAdvancedManagementActivity.java:onCreate","message":"Advanced screen ready","hypothesisId":"A","timestamp":1779204522475,"data":{"imgAddNull":false,"imgEditNull":false,"imgDeleteNull":false,"deptCount":5,"employeeCount":64}}
+{"sessionId":"ae95d2","location":"LoginActivity.java:loginSystem","message":"Login attempt","hypothesisId":"C","timestamp":1779204522221,"data":{"loginOk":true,"isAdmin":false,"isEmployee":true}}
+{"sessionId":"ae95d2","location":"AddEmployeeActivity.java:onCreate","message":"Add employee screen ready","hypothesisId":"E","timestamp":1779204540271,"data":{}}
