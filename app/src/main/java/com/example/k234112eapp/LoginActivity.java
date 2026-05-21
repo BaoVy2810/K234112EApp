@@ -17,6 +17,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.models.ListUserAccount;
+import com.example.models.UserAccount;
+
 public class LoginActivity extends AppCompatActivity {
     EditText edtUserName;
     EditText edtPassword;
@@ -62,12 +65,12 @@ public class LoginActivity extends AppCompatActivity {
         }
         chkSaveLogin.setChecked(saved);
     }
-
     public void loginSystem(View view) {
         String username = edtUserName.getText().toString().trim();
         String password = edtPassword.getText().toString().trim();
-        if (username.equalsIgnoreCase(getString(R.string.str_default_username))
-                && password.equals(getString(R.string.str_default_password))) {
+        UserAccount uc = ListUserAccount.login(username, password);
+        if (uc!=null)
+        {
             boolean saved = chkSaveLogin.isChecked();
             SharedPreferences preferences = getSharedPreferences(name_share_pref, MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
@@ -78,15 +81,21 @@ public class LoginActivity extends AppCompatActivity {
 
             txtMessage.setText(getString(R.string.str_login_success));
             if (radAdmin.isChecked()) {
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-            } else {
-                startActivity(new Intent(LoginActivity.this, EmployeeAdvancedManagementActivity.class));
+                Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+                intent.putExtra("USER_LOGIN",uc);
+                startActivity(intent);
             }
-        } else {
+            else
+            {
+                Intent intent=new Intent(LoginActivity.this,EmployeeAdvancedManagementActivity.class);
+                startActivity(intent);
+            }
+        }
+        else
+        {
             txtMessage.setText(getString(R.string.str_login_failed));
         }
     }
-
     public void exitSystem(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
         builder.setTitle(getString(R.string.str_exit));

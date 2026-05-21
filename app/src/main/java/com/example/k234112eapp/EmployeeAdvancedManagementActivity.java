@@ -12,6 +12,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -71,7 +72,15 @@ public class EmployeeAdvancedManagementActivity extends AppCompatActivity {
         imgAddEmployee.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(EmployeeAdvancedManagementActivity.this, AddEmployeeActivity.class));
+                int selectedIndex = spDepartment.getSelectedItemPosition();
+                if (selectedIndex == 0) {
+                    Toast.makeText(EmployeeAdvancedManagementActivity.this,
+                            "Vui lòng chọn phòng ban trước khi thêm nhân viên", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Intent intent = new Intent(EmployeeAdvancedManagementActivity.this, AddEmployeeActivity.class);
+                intent.putExtra("DEPARTMENT_INDEX", selectedIndex);
+                startActivityForResult(intent, 9999);
             }
         });
 
@@ -242,5 +251,18 @@ public class EmployeeAdvancedManagementActivity extends AppCompatActivity {
         imgAddEmployee = findViewById(R.id.imgAddEmployee);
         imgEditEmployee = findViewById(R.id.imgEditEmployee);
         imgDeleteEmployee = findViewById(R.id.imgDeleteEmployee);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 9999 && resultCode == 888)
+        {
+            Employee emp=(Employee)data.getSerializableExtra("NEW_EMPLOYEE");
+            int departmentIndex = data.getIntExtra("DEPARTMENT_INDEX", 1); // mặc định index 1 nếu lỗi
+            Department targetDepartment = listOfDepartment.get(departmentIndex);
+            targetDepartment.addEmployee(emp);
+            refreshEmployeeList(spDepartment.getSelectedItemPosition());
+
+        }
     }
 }
