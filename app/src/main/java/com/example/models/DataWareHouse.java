@@ -2,6 +2,7 @@ package com.example.models;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class DataWareHouse {
     public static ArrayList<Category> getCategories(){
@@ -131,11 +132,82 @@ public class DataWareHouse {
         }
         return orders;
     }
-    public static ArrayList<OrderDetail> setOrderDetails(ArrayList<Order>orders,ArrayList<Product> products)
-    {
-        ArrayList<OrderDetail> orderDetails=new ArrayList<>();
-        Order od0=orders.get(0);
+    public static ArrayList<OrderDetail> setOrderDetails(ArrayList<Order> orders, ArrayList<Product> products) {
+        ArrayList<OrderDetail> orderDetails = new ArrayList<>();
+        int detailCounter = 1;
+        for (int i = 0; i < orders.size(); i++) {
+            Order order = orders.get(i);
+            // Mỗi order có từ 1 tới 10 order detail
+            int numDetails = (i % 10) + 1;
+            for (int j = 0; j < numDetails; j++) {
+                Product product = products.get((i + j) % products.size());
+                String detailId = "od" + detailCounter++;
+                int quantity = (j % 5) + 1; // Số lượng từ 1 đến 5
+                orderDetails.add(new OrderDetail(
+                        detailId,
+                        order.getOrderId(),
+                        product.getProductId(),
+                        quantity,
+                        product.getPrice(),
+                        product.getCoupon(),
+                        product.getVAT()
+                ));
+            }
+        }
         return orderDetails;
+    }
+    public static ArrayList<OrderDetail> getOrderDetails()
+    {
+        ArrayList<Order> orders=getOrders();
+        ArrayList<Product> products=getProducts();
+        ArrayList<OrderDetail> orderDetails=setOrderDetails(orders,products);
+        return orderDetails;
+    }
+    public static double sumOfMoney(Order od)
+    {
+        double sum=0;
+        ArrayList<OrderDetail> details = getOrderDetails();
+        for (OrderDetail d : details) {
+            if (d.getOrderId().equals(od.getOrderId())) {
+                double amount = d.getQuantity() * d.getPrice();
+                amount = amount * (1 - d.getCoupon());
+                amount = amount * (1 + d.getVAT());
+                sum += amount;
+            }
+        }
+        return sum;
+    }
+    public static ArrayList<Order> filterOrdersByDate(Date fromDate, Date toDate)
+    {
+        ArrayList<Order> orders=getOrders();
+        ArrayList<Order> result_filter=new ArrayList<>();
 
+        // Chuẩn hóa fromDate về đầu ngày (00:00:00.000)
+        Calendar calFrom = Calendar.getInstance();
+        calFrom.setTime(fromDate);
+        calFrom.set(Calendar.HOUR_OF_DAY, 0);
+        calFrom.set(Calendar.MINUTE, 0);
+        calFrom.set(Calendar.SECOND, 0);
+        calFrom.set(Calendar.MILLISECOND, 0);
+        long startTime = calFrom.getTimeInMillis();
+
+        // Chuẩn hóa toDate về cuối ngày (23:59:59.999)
+        Calendar calTo = Calendar.getInstance();
+        calTo.setTime(toDate);
+        calTo.set(Calendar.HOUR_OF_DAY, 23);
+        calTo.set(Calendar.MINUTE, 59);
+        calTo.set(Calendar.SECOND, 59);
+        calTo.set(Calendar.MILLISECOND, 999);
+        long endTime = calTo.getTimeInMillis();
+
+        for (Order od : orders) {
+            long odTime = od.getOrderDate().getTime();
+            // Kiểm tra xem thời gian hóa đơn có nằm trong khoảng từ start đến end không
+            if (odTime >= startTime && odTime <= endTime) {
+                result_filter.add(od);
+            }
+        }
+
+        return result_filter;
     }
 }

@@ -81,7 +81,9 @@ public class LoginActivity extends AppCompatActivity {
 
             txtMessage.setText(getString(R.string.str_login_success));
             if (radAdmin.isChecked()) {
-                Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+                //dĩ nhiên ta phải kiểm tra account này có quyền admin hay ko (tính sau)
+                //Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+                Intent intent=new Intent(LoginActivity.this,OrderManagementActivity.class);
                 intent.putExtra("USER_LOGIN",uc);
                 startActivity(intent);
             }

@@ -42,6 +42,9 @@
     <string name="str_department">Department</string>
     <string name="str_list_employee">List Employee</string>
     <string name="str_birthplace">Birth Place:</string>
+    <string name="str_order_report">Order Report</string>
+    <string name="str_from_date">From Date:</string>
+    <string name="str_to_date">To Date:</string>
     <string-array name="array_birthplace">
         <item>An Giang</item>
         <item>Bắc Ninh</item>
