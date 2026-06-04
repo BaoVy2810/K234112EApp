@@ -23,6 +23,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.K234112EApp">
         <activity
+            android:name=".order_custom_item"
+            android:exported="false" />
+        <activity
             android:name=".OrderManagementActivity"
             android:exported="false" />
         <activity

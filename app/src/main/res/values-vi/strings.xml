@@ -45,6 +45,11 @@
     <string name="str_order_report">Order Report</string>
     <string name="str_from_date">From Date:</string>
     <string name="str_to_date">To Date:</string>
+    <string name="str_order_status_all">All Status</string>
+    <string name="str_order_status_completed">Completed</string>
+    <string name="str_order_status_not_payment">Not Payment</string>
+    <string name="str_order_status_on_logistic">On Logistic</string>
+    <string name="str_order_status_customer_complaint">Customer Complaint</string>
     <string-array name="array_birthplace">
         <item>An Giang</item>
         <item>Bắc Ninh</item>

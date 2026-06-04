@@ -9,8 +9,12 @@ public class Order implements Serializable {
     private String employeeId;
     private String customerId;
     private Date orderDate;
+    private OrderStatus orderStatus;
     static SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
-    public Order() {
+
+    public Order(String orderId, String employeeId, String customerId, Date orderDate, OrderStatus orderStatus) {
+        this(orderId, employeeId, customerId, orderDate);
+        this.orderStatus=orderStatus;
     }
 
     public Order(String orderId, String employeeId, String customerId, Date orderDate) {
@@ -52,10 +56,25 @@ public class Order implements Serializable {
         this.orderDate = orderDate;
     }
 
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public static SimpleDateFormat getSdf() {
+        return sdf;
+    }
+
+    public static void setSdf(SimpleDateFormat sdf) {
+        Order.sdf = sdf;
+    }
+
     @Override
     public String toString() {
         String data=orderId+"\t"+sdf.format(orderDate)+"\t"+DataWareHouse.sumOfMoney(this);
         return data;
     }
-
 }

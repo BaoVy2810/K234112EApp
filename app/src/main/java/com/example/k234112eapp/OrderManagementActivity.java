@@ -2,6 +2,8 @@ package com.example.k234112eapp;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -9,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -16,6 +19,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.models.DataWareHouse;
 import com.example.models.Order;
+import com.example.models.OrderAdapter;
+import com.example.models.OrderStatus;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,9 +34,12 @@ public class OrderManagementActivity extends AppCompatActivity {
     ImageView imgToDate;
     ImageView imgClearFilter;
     ImageView imgFilter;
+
     ListView lvOrder;
     ArrayList<Order> orders;
-    ArrayAdapter<Order> orderAdapter;
+//    ArrayAdapter<Order> orderAdapter;
+    OrderAdapter orderAdapter;
+
     SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/yyyy");
     Calendar calFromDate= Calendar.getInstance();
     Calendar calToDate= Calendar.getInstance();
@@ -135,9 +143,38 @@ public class OrderManagementActivity extends AppCompatActivity {
 
         lvOrder = findViewById(R.id.lvOrder);
         orders = DataWareHouse.getOrders();
-        orderAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, orders);
+//        orderAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, orders);
+        orderAdapter = new OrderAdapter(this, R.layout.activity_order_custom_item);
+        orderAdapter.addAll(orders);
         lvOrder.setAdapter(orderAdapter);
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.order_status, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item){
+        if (item.getItemId() == R.id.mnu_order_status_all){
+            orders=DataWareHouse.filterOrdersByStatus(OrderStatus.ALL);
+        }
+        else if (item.getItemId() == R.id.mnu_order_status_completed){
+            orders=DataWareHouse.filterOrdersByStatus(OrderStatus.COMPLETED);
+        }
+        else if (item.getItemId() == R.id.mnu_order_status_not_payment){
+            orders=DataWareHouse.filterOrdersByStatus(OrderStatus.NOT_PAYMENT);
+        }
+        else if (item.getItemId() == R.id.mnu_order_status_on_logistic){
+            orders=DataWareHouse.filterOrdersByStatus(OrderStatus.ON_LOGISTIC);
+        }
+        else if (item.getItemId() == R.id.mnu_order_status_customer_complaint){
+            orders=DataWareHouse.filterOrdersByStatus(OrderStatus.CUSTOMER_COMPLAINT);
+        }
+        orderAdapter.clear();
+        orderAdapter.addAll(orders);
+        orderAdapter.notifyDataSetChanged();
+        return super.onOptionsItemSelected(item);
     }
 
 }

@@ -110,6 +110,7 @@ public class DataWareHouse {
         ArrayList<Employee>employees=getEmployee();
         ArrayList<Customer>customers=getCustomers();
         Calendar cal=Calendar.getInstance();
+        OrderStatus[] statuses = OrderStatus.values();
 
         for (int i=1;i<=100;i++){
             int year,month,day;
@@ -128,7 +129,11 @@ public class DataWareHouse {
             cal.set(year,month,day,8+(i%10),i%60,0);
             String empId = employees.get((i - 1) % employees.size()).getId();
             String cusId = customers.get((i - 1) % customers.size()).getCustomerId();
-            orders.add(new Order("o"+i,empId,cusId,cal.getTime()));
+
+            // Thiết lập trạng thái xoay vòng (bỏ qua ALL ở index 0)
+            OrderStatus status = statuses[(i % (statuses.length - 1)) + 1];
+
+            orders.add(new Order("o"+i, empId, cusId, cal.getTime(), status));
         }
         return orders;
     }
@@ -208,6 +213,24 @@ public class DataWareHouse {
             }
         }
 
+        return result_filter;
+    }
+
+    public static ArrayList<Order> filterOrdersByStatus(OrderStatus status)
+    {
+        ArrayList<Order> orders = getOrders();
+        // Nếu status là ALL thì trả về toàn bộ danh sách
+        if (status == OrderStatus.ALL) {
+            return orders;
+        }
+
+        ArrayList<Order> result_filter = new ArrayList<>();
+        for (Order od : orders) {
+            // So sánh trạng thái của hóa đơn với trạng thái cần lọc
+            if (od.getOrderStatus() == status) {
+                result_filter.add(od);
+            }
+        }
         return result_filter;
     }
 }
