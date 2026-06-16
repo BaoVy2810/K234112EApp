@@ -1,12 +1,18 @@
 package com.example.k234112eapp;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -36,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
     CheckBox chkSaveLogin;
     String name_share_pref = "LoginInfo";
     RadioButton radAdmin, radEmployee;
+    Button btnLogin,btnExit;
 
     public static final String DATABASE_NAME = "K234112ESales.sqlite";
     // chỉ đổi tên file database_name thôi
@@ -100,6 +107,8 @@ public class LoginActivity extends AppCompatActivity {
         chkSaveLogin = findViewById(R.id.chkSaveLogin);
         radAdmin = findViewById(R.id.radAdmin);
         radEmployee = findViewById(R.id.radEmployee);
+        btnLogin=findViewById(R.id.btnLogin);
+        btnExit = findViewById(R.id.btnExit);
     }
 
     private void loadLoginFields() {
@@ -135,12 +144,44 @@ public class LoginActivity extends AppCompatActivity {
                 //dĩ nhiên ta phải kiểm tra account này có quyền admin hay ko (tính sau)
                 //Intent intent=new Intent(LoginActivity.this,MainActivity.class);
                 //Intent intent=new Intent(LoginActivity.this,OrderManagementActivity.class);
-                Intent intent=new Intent(LoginActivity.this, CategoryActivity.class);
+                Intent intent=new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
             }
             else
             {
                 Intent intent=new Intent(LoginActivity.this,EmployeeAdvancedManagementActivity.class);
+                startActivity(intent);
+            }
+        }
+        else
+        {
+            txtMessage.setText(getString(R.string.str_login_failed));
+        }
+    }
+    public void loginSystemOld(View view) {
+        String username=edtUserName.getText().toString();
+        String password=edtPassword.getText().toString();
+        if(username.equalsIgnoreCase("admin") &&
+                password.equals("123"))
+        {
+            boolean saved=chkSaveLogin.isChecked();
+            SharedPreferences preferences=getSharedPreferences(name_share_pref,MODE_PRIVATE);
+            SharedPreferences.Editor editor=preferences.edit();
+            editor.putString("UserName",username);
+            editor.putString("Password",password);
+            editor.putBoolean("Saved",saved);
+            editor.commit();
+
+            txtMessage.setText(getString(R.string.str_login_success));
+            if(radAdmin.isChecked()) {
+                //dĩ nhiên ta phải kiểm tra account này có quyền admin hay ko (tính sau)
+                //Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                Intent intent = new Intent(LoginActivity.this, CategoryActivity.class);
+                startActivity(intent);
+            }
+            else
+            {
+                Intent intent = new Intent(LoginActivity.this, EmployeeAdvancedManagementActivity.class);
                 startActivity(intent);
             }
         }
@@ -170,4 +211,50 @@ public class LoginActivity extends AppCompatActivity {
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
+    BroadcastReceiver internetStateReceiver=new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action=intent.getAction();
+            if(action.equals(ConnectivityManager.CONNECTIVITY_ACTION))
+            {
+
+            }
+            ConnectivityManager connectivirtManager= (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
+            if (connectivirtManager != null)
+            {
+                NetworkInfo networkInfo = connectivirtManager.getActiveNetworkInfo();
+                if(networkInfo != null && networkInfo.isConnected())
+                {
+                    btnLogin.setEnabled(true);
+                }
+                else
+                {
+                    btnLogin.setEnabled(false);
+                }
+            }
+        }
+    };
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences preferences=getSharedPreferences(name_share_pref,MODE_PRIVATE);
+        String username=preferences.getString("UserName","");
+        String password=preferences.getString("Password","");
+        boolean saved=preferences.getBoolean("Saved",false);
+        if(saved)
+        {
+            edtUserName.setText(username);
+            edtPassword.setText(password);
+        }
+        chkSaveLogin.setChecked(saved);
+        IntentFilter intentFilter=new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(internetStateReceiver, intentFilter);
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(internetStateReceiver);
+    }
 }
+// lưu tạm thời trong onPause
+// phục hồi trong onResume

@@ -1,8 +1,11 @@
 package com.example.dals;
 
+import static android.content.Intent.getIntent;
 import static com.example.k234112eapp.LoginActivity.database;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -26,5 +29,23 @@ public class CategoryDAO {
         }
         cursor.close();
         return categories;
+    }
+    public static long saveCategory(Context context, Category category)
+    {
+        database = context.openOrCreateDatabase(DATABASE_NAME, context.MODE_PRIVATE, null);
+        ContentValues values=new ContentValues();
+        values.put("CateId",category.getCateId());
+        values.put("CateName",category.getCateName());
+        values.put("CateDesc",category.getCateDesc());
+        long result=database.insert(TABLE_NAME,null,values);
+        return result;
+    }
+    public static long removeCategory(Context context, Category category){
+        database = context.openOrCreateDatabase(DATABASE_NAME, context.MODE_PRIVATE, null);
+        long result=database.delete(
+                TABLE_NAME,
+                "CateId=?",
+                new String[]{category.getCateId()});
+        return result;
     }
 }

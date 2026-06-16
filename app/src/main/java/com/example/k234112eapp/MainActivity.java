@@ -60,4 +60,13 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void openSmsSpywareActivity(View view) {
+        Intent intent=new Intent(MainActivity.this, SMSSypewareActivity.class);
+        startActivity(intent);
+    }
+
+    public void openMultiThreadingActivity(View view) {
+        Intent intent=new Intent(MainActivity.this, MultiThreadingActivity.class);
+        startActivity(intent);
+    }
 }

@@ -49,6 +49,18 @@
     <string name="str_order_status_not_payment">Not Payment</string>
     <string name="str_order_status_on_logistic">On Logistic</string>
     <string name="str_order_status_customer_complaint">Customer Complaint</string>
+    <string name="str_category_new">New Category</string>
+    <string name="str_category_statistic">Statistic</string>
+    <string name="str_category_id">Category ID:</string>
+    <string name="str_category_name">Category Name:</string>
+    <string name="str_category_description">Description:</string>
+    <string name="str_phone">Phone:</string>
+    <string name="str_time">Time:</string>
+    <string name="str_messagebody">Message Body:</string>
+    <string name="str_smsspyware">SMS SPYWARE ACTIVITY</string>
+    <string name="str_number_button">Number Button</string>
+    <string name="str_create_button">Button</string>
+    <string name="str_multi_threading_demo">Multi Threading Demo</string>
     <string-array name="array_birthplace">
         <item>An Giang</item>
         <item>Bắc Ninh</item>
